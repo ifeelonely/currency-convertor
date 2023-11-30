@@ -11,6 +11,7 @@ const CurrencyItem: React.FC<currencyItemInterface> = ({
   Nominal,
 }) => {
   const [filledStar, setIsFilledStar] = useState<boolean>(false);
+
   return (
     <div className={styles.currencyItem}>
       <div onClick={() => setIsFilledStar(!filledStar)}>

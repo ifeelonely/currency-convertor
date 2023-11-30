@@ -33,5 +33,5 @@ body {
   gap: 2rem;
   background-color: var(--main-white);
   width: 100%;
-  max-width: 80rem;
+  max-width: 120rem;
 }

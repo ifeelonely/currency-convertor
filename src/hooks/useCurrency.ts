@@ -35,7 +35,12 @@ const useCurrency = () => {
         const response = await fetch(BASE_URL);
         const data = await response.json();
         setCurrencyLoadedList(data);
-        setValutes(Object.values(data.Valute));
+        setValutes(
+          Object.values(data.Valute).map((valute: any) => ({
+            ...valute,
+            favourite: false,
+          }))
+        );
         setIsLoaded(true);
       } catch (error: any) {
         setError(error.message);
@@ -46,7 +51,7 @@ const useCurrency = () => {
     getCurrencyList();
   }, []);
 
-  return { currencyLoadedList, error, valutes, isLoaded };
+  return { currencyLoadedList, error, valutes, isLoaded, setValutes };
 };
 
 export { useCurrency };

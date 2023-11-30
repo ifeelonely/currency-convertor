@@ -3,7 +3,9 @@ import { CurrencyListInterface } from './CurrencyListInterface';
 import CurrencyItem from '../currencyItem/CurrencyItem';
 import styles from './CurrencyList.module.css';
 
-const CurrencyList: React.FC<CurrencyListInterface> = ({ currencyList }) => {
+const CurrencyList: React.FC<CurrencyListInterface> = ({
+  currencyList,
+}) => {
   return (
     <div className={styles.currencyListContainer}>
       <div className={styles.currencyHeader}>
@@ -15,7 +17,11 @@ const CurrencyList: React.FC<CurrencyListInterface> = ({ currencyList }) => {
       </div>
       <div className={styles.currencyList}>
         {currencyList.map((currency) => (
-          <CurrencyItem key={currency.ID} {...currency}/>
+          <CurrencyItem
+            key={currency.ID}
+            {...currency}
+            ID={currency.ID}
+          />
         ))}
       </div>
     </div>

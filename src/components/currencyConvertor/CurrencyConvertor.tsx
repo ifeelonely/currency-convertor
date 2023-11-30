@@ -1,15 +1,11 @@
-import React, { useState, useMemo } from 'react';
-import {
-  Select,
-  MenuItem,
-  InputLabel,
-  FormControl,
-  CircularProgress,
-} from '@mui/material';
+import React, { useState, useMemo, useEffect } from 'react';
+import { CircularProgress } from '@mui/material';
 import CurrencyList from '../currencyList/CurrencyList';
 import styles from './CurrencyConvertor.module.css';
 import { useCurrency } from '../../hooks/useCurrency';
-import { currencyItemInterface } from '../currencyItem/CurrencyItemInterface';
+import useConvertionHistory from '../../hooks/useConvertionHistory';
+import CurrencySelect from '../currencySelect/CurrencySelect';
+import ConvertionHistory from '../convertionHistory/ConvertionHistory';
 
 const CurrencyConvertor: React.FC = () => {
   const {
@@ -18,6 +14,11 @@ const CurrencyConvertor: React.FC = () => {
     error,
     valutes: initialValutes,
   } = useCurrency();
+  const {
+    item: items,
+    getLocalStorageItem,
+    setLocalStorageItem,
+  } = useConvertionHistory();
   const [currentCurrency, setCurrentCurrency] = useState<string>('');
 
   const calculatedByCurrentCurrency = useMemo(() => {
@@ -31,8 +32,15 @@ const CurrencyConvertor: React.FC = () => {
     } else return initialValutes;
   }, [currentCurrency, initialValutes, currencyLoadedList?.Valute]);
 
-  const handleOnChangeBaseCurrency = (e: any) =>
-    setCurrentCurrency(e.target.value);
+  const handleOnChangeBaseCurrency = (e: any) => {
+    setCurrentCurrency((state) => e.target.value);
+    setLocalStorageItem('convertions', e.target.value);
+  };
+
+  useEffect(() => {
+    getLocalStorageItem('convertions');
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentCurrency]);
 
   if (error)
     return (
@@ -50,24 +58,15 @@ const CurrencyConvertor: React.FC = () => {
 
   return (
     <div className={styles.currencyConvertor}>
-      {isLoaded ? (
-        <FormControl style={{ width: '100%', maxWidth: '20rem' }}>
-          <InputLabel id="select">Base Currency</InputLabel>
-          <Select
-            id="select"
-            label="base"
-            value={currentCurrency}
-            onChange={handleOnChangeBaseCurrency}
-          >
-            {initialValutes.map((valute: currencyItemInterface) => (
-              <MenuItem value={valute.CharCode} key={valute.ID}>
-                {valute.Name}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-      ) : null}
-      <CurrencyList currencyList={calculatedByCurrentCurrency} />
+      <div className={styles.currencyConvertorInner}>
+        <CurrencySelect
+          options={initialValutes}
+          selectValue={currentCurrency}
+          onChange={handleOnChangeBaseCurrency}
+        />
+        <CurrencyList currencyList={calculatedByCurrentCurrency} />
+      </div>
+      <ConvertionHistory items={items} />
     </div>
   );
 };
