@@ -1,0 +1,17 @@
+.currencyHeader {
+  display: grid;
+  grid-template-columns: 1fr 3fr 1fr 1fr 1fr;
+  gap: 1rem;
+  border-bottom: 3px solid grey;
+  padding: 1rem;
+}
+
+.currencyList {
+  display: flex;
+  flex-direction: column;
+}
+
+.currencyListContainer {
+  border: 1px solid var(--border-grey);
+  padding: 1rem;
+}
