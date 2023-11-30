@@ -35,12 +35,7 @@ const useCurrency = () => {
         const response = await fetch(BASE_URL);
         const data = await response.json();
         setCurrencyLoadedList(data);
-        setValutes(
-          Object.values(data.Valute).map((valute: any) => ({
-            ...valute,
-            favourite: false,
-          }))
-        );
+        setValutes(Object.values(data.Valute));
         setIsLoaded(true);
       } catch (error: any) {
         setError(error.message);
